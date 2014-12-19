@@ -1,0 +1,135 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  background-color: #636363;
+}
+
+hr {
+  border-top: 1px solid #6B6B6B;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  color:#D9E0D5;
+}
+
+a {
+  color: #B7BFB2;
+}
+
+a:hover, a:focus {
+  color: #206118;
+}
+
+.nav>li>a:hover, .nav>li>a:focus {
+  background-color: #C5C9C3;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  width: 100%;
+  margin: 0;
+  padding: .75% 2%;
+  background-color: grey;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+  border: 0;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #DBDBDB;
+}
+
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:active {
+  color: #DBDBDB;
+}
+
+#navbar .navbar-brand {
+  width: 80%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 50px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    border-right: 1px solid #000;
+  }
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #C9C9C9;
+  background-color: #206118;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.container {
+  width: 90%;
+}
+
+.rt-tracker ul {
+  margin: 1%;
+  padding: 0;
+  text-decoration: none;
+  list-style-type: none;
+  background-color: grey;
+}
