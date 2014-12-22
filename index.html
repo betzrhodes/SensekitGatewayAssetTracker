@@ -30,7 +30,9 @@
       </div>
     </nav>
 
-    <h4 class="sub-header">Realtime Tracker</h4>
+    <div class="sub-header">
+      <h4>Realtime Tracker</h4>
+    </div>
     <div class="container rt-tracker">
       <div class="row">
       </div>
@@ -39,7 +41,17 @@
 
     <hr>
 
-    <h4 class="sub-header">Tracking History</h4>
+    <div id="tracking-history" class="anchor"></div>
+
+    <div class="sub-header">
+      <h4>Tracking History</h4>
+      <div class="btn-group tag-sorter">
+        <button class="btn dropdown-toggle" data-toggle="dropdown">Sort<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#tracking-history" id="all">All Tags</a></li>
+        </ul>
+      </div>
+    </div>
     <div class="container">
       <div class="history">
         <div class="table-responsive">
