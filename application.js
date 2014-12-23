@@ -12,6 +12,7 @@ $(document).ready(function() {
   var fbTags = new Firebase("https://bletracker.firebaseio.com/tags/");
   var fbMoveTracker = new Firebase("https://bletracker.firebaseio.com/moveTracker/");
   var fbRoomTracker = new Firebase("https://bletracker.firebaseio.com/roomTracker/");
+
   //Firebase Connections
   var fbMoveTrackerAll, fbMoveTrackerOne
 
@@ -50,34 +51,12 @@ $(document).ready(function() {
     //get initial data
     fbRoomTracker.once("value", function(dataSnapshot) {
       dataSnapshot.forEach(function(childSnapshot) {
-        data.roomID = childSnapshot.key();
-        data.roomName = roomNamesById[childSnapshot.key()];
-        childSnapshot.forEach(function(t) {
-          data.tagId = t.key();
-          data.tagName = tagNamesById[t.key()];
-          data.rssi = t.val().rssi;
-          // dataTS = new Date(t.val().time * 1000);
-
-          // translateTime(dataTS, data)
-          data.ts = (new Date(t.val().time * 1000)).toLocaleTimeString();
-          createTagWidget(data);
-        });
+        buildRoomData(childSnapshot, data);
       });
     });
     //listen for changes
     fbRoomTracker.on("child_changed", function(childSnapshot, prevChildName) {
-      data.roomID = childSnapshot.key();
-      data.roomName = roomNamesById[childSnapshot.key()];
-      childSnapshot.forEach(function(t) {
-        data.tagId = t.key();
-        data.tagName = tagNamesById[t.key()];
-        data.rssi = t.val().rssi;
-        // dataTS = new Date(t.val().time * 1000);
-
-        // translateTime(dataTS, data)
-        data.ts = (new Date(t.val().time * 1000)).toLocaleTimeString();
-        createTagWidget(data);
-      })
+      buildRoomData(childSnapshot, data);
     });
   }
 
@@ -86,7 +65,7 @@ $(document).ready(function() {
     clearHistory();
     fbMoveTracker.off('child_added', fbMoveTrackerOne);
     fbMoveTrackerAll = fbMoveTracker.limitToLast(100).on("child_added", function(snapshot) {
-      buildHistoricalData(snapshot, data);
+      buildHistoricalData(snapshot, data, 100);
     });
   }
 
@@ -95,7 +74,7 @@ $(document).ready(function() {
     clearHistory();
     fbMoveTracker.off('child_added', fbMoveTrackerAll);
     fbMoveTrackerOne = fbMoveTracker.orderByChild("tag").equalTo(tagId).limitToLast(50).on("child_added", function(snapshot) {
-      buildHistoricalData(snapshot, data);
+      buildHistoricalData(snapshot, data, 50);
     });
   }
 
@@ -120,13 +99,26 @@ $(document).ready(function() {
     if (callback) { callback() };
   }
 
-  function buildHistoricalData(snapshot, data) {
+  function buildRoomData(snapshot, data) {
+    data.roomID = snapshot.key();
+    data.roomName = roomNamesById[snapshot.key()];
+    snapshot.forEach(function(cs) {
+      data.tagId = cs.key();
+      data.tagName = tagNamesById[cs.key()];
+      data.rssi = cs.val().rssi;
+      data.ts = (new Date(cs.val().time * 1000)).toLocaleTimeString();
+      createTagWidget(data);
+    });
+  }
+
+  function buildHistoricalData(snapshot, data, limit) {
     data.preLoc = roomNamesById[snapshot.val().locBefore];
     data.currLoc = roomNamesById[snapshot.val().locNow];
     data.tag = tagNamesById[snapshot.val().tag];
     data.ts = (new Date(snapshot.val().time * 1000)).toLocaleTimeString();
-    updateHistory(data);
+    updateHistory(data, limit);
   }
+
 
   //// View Functions ////
   function submitTagSelector(e) {
@@ -139,11 +131,14 @@ $(document).ready(function() {
     }
   }
 
-  function updateHistory(data) {
+  function updateHistory(data, limit) {
     if (data.preLoc) {
       $(".history tbody").prepend("<tr class = 'data'><td class = 'time'>"+data.ts+"</td><td class = 'name'>"+data.tag+"</td><td class = 'event'>Moved from "+data.preLoc+" into "+data.currLoc+"</td></tr>")
     // } else {
     //   $(".history tbody").prepend("<tr class = 'data'><td class = 'time'>"+data.ts+"</td><td class = 'name'>"+data.tag+"</td><td class = 'event'>Entered "+data.currLoc+"</td></tr>")
+    }
+    if ($(".history .data").length > limit) {
+      $(".history .data").last().remove();
     }
   }
 
@@ -208,16 +203,24 @@ $(document).ready(function() {
   }
 
   function assignColorsToRooms() {
-    var colors = ["blue", "green", "yellow", "purple", "orange"];
+    var colors = ["blue", "yellow", "green", "purple", "orange"];
+    var roomColors = {"Out Of Range" : "red"}
     for(var id in roomNamesById) {
       var name = roomNamesById[id];
       if(name === "Out Of Range") {
         colorsById[id] = "red";
       } else if (name) {
-        colorsById[id] = colors.shift();
+        if (roomColors[name]) {
+          colorsById[id] = roomColors[name];
+        } else {
+          var color = colors.shift();
+          colorsById[id] = color;
+          roomColors[name] = color;
+        }
       }
     }
   }
+
 
   /////// timestamp functions
   function translateTime(dataTS, data) {
