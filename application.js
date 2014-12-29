@@ -15,6 +15,8 @@ $(document).ready(function() {
   //Firebase Connections
   var fbMoveTrackerAll, fbMoveTrackerOne
 
+  //Timeago
+  jQuery("time.timeago").timeago();
 
   //// Runtime ////
   getTagNames();
@@ -105,7 +107,7 @@ $(document).ready(function() {
       data.tagId = cs.key();
       data.tagName = tagNamesById[cs.key()];
       data.rssi = cs.val().rssi;
-      data.ts = (new Date(cs.val().time * 1000)).toLocaleTimeString();
+      data.ts = jQuery.timeago(new Date(cs.val().time * 1000));
       data.rssiStatus = getRSSIStatus(data.rssi);
       createTagWidget(data);
     });
@@ -182,8 +184,10 @@ $(document).ready(function() {
 
   function createTagWidget(data) {
     $("."+data.tagId).remove();
-    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='css/img/avtr_blank.png' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp'>updated "+data.ts+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
+    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='css/img/avtr_blank.png' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp'>"+data.ts+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
   }
+
+
 
   function addTagToSortDropdown(tagId) {
     $(".tag-sorter ul").append("<li><a href='#tracking-history' id='"+tagId+"'>"+tagNamesById[tagId]+"</a></li>");
