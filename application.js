@@ -79,7 +79,7 @@ $(document).ready(function() {
     var data = {};
     clearHistory();
     fbMoveTracker.off('child_added', fbMoveTrackerOne);
-    fbMoveTrackerAll = fbMoveTracker.limitToLast(100).on("child_added", function(snapshot) {
+    fbMoveTrackerAll = fbMoveTracker.limitToLast(200).on("child_added", function(snapshot) {
       buildHistoricalData(snapshot, data, 100);
     });
   }
@@ -137,11 +137,11 @@ $(document).ready(function() {
 
   function getRSSIStatus(rssi) {
     if (rssi === undefined) { return "status-empty" };
-    if (rssi < -75) { return "status-one" };
-    if (rssi < -65) { return "status-two" };
-    if (rssi < -55) { return "status-three" };
-    if (rssi < -45) { return "status-four" };
-    if (rssi < -35) { return "status-full" };
+    if (rssi < -80) { return "status-one" };
+    if (rssi < -70) { return "status-two" };
+    if (rssi < -60) { return "status-three" };
+    if (rssi < -50) { return "status-four" };
+    if (rssi < -40) { return "status-full" };
   }
 
   //// View Functions ////
