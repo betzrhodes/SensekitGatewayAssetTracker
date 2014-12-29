@@ -146,12 +146,15 @@ thead {
 }
 
 .room {
-/*  border-top: 1px solid #f5f5f5;*/
   min-height: 200px;
 }
 
 .room:nth-child(1) {
-  border-right: 2px solid #f5f5f5;
+  border-right: 1px solid #f5f5f5;
+}
+
+.room:nth-child(2) {
+  border-left: 1px solid #f5f5f5;
 }
 
 .room h2 {
@@ -188,7 +191,7 @@ thead {
   display: inline-block;
   height: 35px;
   width: 35px;
-  margin: 0 0 0 4px;
+  margin: 0;
 }
 
 .avtr {
