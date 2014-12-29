@@ -173,24 +173,22 @@ thead {
 }
 
 .tag {
+  position: relative;
   display: inline-block;
   margin: 15px 5px 5px 5px;
   height: 64px;
   width: 240px;
-  /*border: 1px solid red;*/
 }
-
-/*.time-stamp {
-  font-size: 10px;
-}*/
 
 .outofrange {
   border-top: 2px solid #f5f5f5;
 }
 
 .status {
-  display: inline-block;
-  height: 35px;
+  position: absolute;
+  bottom: 27px;
+  right: 18px;
+  height: 30px;
   width: 35px;
   margin: 0;
 }
@@ -235,36 +233,36 @@ thead {
 
 .status-full {
   background-image: url("img/status_bars_full.png");
-  background-size: 35px 35px;
+  background-size: 35px 30px;
   background-repeat: no-repeat;
 }
 
 .status-four {
   background-image: url("img/status_bars_four.png");
-  background-size: 35px 35px;
+  background-size: 35px 30px;
   background-repeat: no-repeat;
 }
 
 .status-three {
   background-image: url("img/status_bars_three.png");
-  background-size: 35px 35px;
+  background-size: 35px 30px;
   background-repeat: no-repeat;
 }
 
 .status-two {
   background-image: url("img/status_bars_two.png");
-  background-size: 35px 35px;
+  background-size: 35px 30px;
   background-repeat: no-repeat;
 }
 
 .status-one {
   background-image: url("img/status_bars_one.png");
-  background-size: 35px 35px;
+  background-size: 35px 30px;
   background-repeat: no-repeat;
 }
 
 .status-empty {
   background-image: url("img/status_bars_empty.png");
-  background-size: 35px 35px;
+  background-size: 35px 30px;
   background-repeat: no-repeat;
 }

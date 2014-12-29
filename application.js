@@ -29,10 +29,8 @@ $(document).ready(function() {
 
   function updateTimeStamps() {
     tsLoop = window.setInterval(function() {
-      console.log("in update");
       for (var i = 0; i < $(".time-stamp").length; i++) {
         $(".time-stamp")[i].innerHTML = "updated: " + moment(parseInt($(".time-stamp")[i].dataset.ts)).fromNow();
-        console.log("updated a timestamp");
       }
     }, 30000);
   }
