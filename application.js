@@ -6,7 +6,6 @@ $(document).ready(function() {
   var tagNamesById = {};
   var colorsById = {};
 
-
   //Firebase Refercences
   var fbGateways = new Firebase("https://bletracker.firebaseio.com/gateways/");
   var fbTags = new Firebase("https://bletracker.firebaseio.com/tags/");
@@ -107,6 +106,7 @@ $(document).ready(function() {
       data.tagName = tagNamesById[cs.key()];
       data.rssi = cs.val().rssi;
       data.ts = (new Date(cs.val().time * 1000)).toLocaleTimeString();
+      data.rssiStatus = getRSSIStatus(data.rssi);
       createTagWidget(data);
     });
   }
@@ -119,6 +119,14 @@ $(document).ready(function() {
     updateHistory(data, limit);
   }
 
+  function getRSSIStatus(rssi) {
+    if (rssi === undefined) { return "status-empty" };
+    if (rssi < -75) { return "status-one" };
+    if (rssi < -65) { return "status-two" };
+    if (rssi < -55) { return "status-three" };
+    if (rssi < -45) { return "status-four" };
+    if (rssi < -35) { return "status-full" };
+  }
 
   //// View Functions ////
   function submitTagSelector(e) {
@@ -147,38 +155,21 @@ $(document).ready(function() {
   }
 
   function createRoomDivs() {
-    //variables
-    var roomName = "";
-    //creates first room div
-    if ($(".room").length === 0) {
-      $(".rt-tracker .row").prepend("<div class='col-md-4 room'><h2></h2></div>");
-    }
-
-    //loops through gateways from database
-    //adds gwId to class or creates div with gwId class
     for (gwId in roomNamesById) {
-      // adds id class and h2 text to first room div
-      if ($(".room h2").text() === "") {
-        $(".room").addClass("rm-"+gwId);
-        $(".room h2").text(roomNamesById[gwId]);
-      // fills in room data / divs
-      } else {
-        //creates a regExp to track room div
-        roomNamesById[gwId] ? roomName = new RegExp(roomNamesById[gwId]) : roomName = "";
-        //if gateway has a location/room
-        if (roomName) {
-          var classAdded = false;
-          // if room div exists add id class to div
+      var roomNameClass = ""
+      if (roomNamesById[gwId]) {
+        roomNameClass = roomNamesById[gwId].replace(/\s+/g, "").toLowerCase();
+        if ($("." + roomNameClass).length === 1) {
+          $("." + roomNameClass).addClass("rm-" + gwId);
+        }
+        if ($("." + roomNameClass).length === 0) {
           for (var i = 0; i < $(".room h2").length; i++) {
-            if (roomName.test(($(".room h2")[i]).innerHTML)) {
-              ($(".room h2")[i]).parentNode.classList.add("rm-"+gwId);
-              classAdded = true;
+            if ( $(".room h2")[i].innerHTML === "" ) {
+              $(".room h2")[i].parentNode.classList.add(roomNameClass);
+              $(".room h2")[i].parentNode.classList.add("rm-" + gwId);
+              $("." + roomNameClass + " h2").text(roomNamesById[gwId]);
               break;
             }
-          }
-          // if room div doesn't exist create a new div
-          if (!classAdded) {
-            $(".rt-tracker .row").append("<div class='col-md-4 room rm-"+gwId+"'><h2>"+roomNamesById[gwId]+"</h2></div>");
           }
         }
       }
@@ -186,12 +177,12 @@ $(document).ready(function() {
   }
 
   function clearRoomDivs() {
-    $(".rt-tracker .row").html("");
+    $(".rt-tracker .row").html('<div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room"><h2></h2></div><div class="col-md-12 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div>');
   }
 
   function createTagWidget(data) {
     $("."+data.tagId).remove();
-    $(".rm-"+data.roomID).append("<ul class='"+data.tagId+" "+colorsById[data.roomID]+"'><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp'>updated "+data.ts+"</li></ul>");
+    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='css/img/avtr_blank.png' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp'>updated "+data.ts+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
   }
 
   function addTagToSortDropdown(tagId) {
