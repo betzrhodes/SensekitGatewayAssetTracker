@@ -19,9 +19,28 @@ $(document).ready(function() {
   getTagNames();
   getGatewayNames(getCurrentRoomData);
   getHistoricalData();
+  updateTimeStamps();
 
   //// Listeners ////
   $(".tag-sorter").on("click", "a", submitTagSelector);
+
+  //// Loops ////
+  var tsLoop;
+
+  function updateTimeStamps() {
+    tsLoop = window.setInterval(function() {
+      console.log("in update");
+      for (var i = 0; i < $(".time-stamp").length; i++) {
+        $(".time-stamp")[i].innerHTML = "updated: " + moment(parseInt($(".time-stamp")[i].dataset.ts)).fromNow();
+        console.log("updated a timestamp");
+      }
+    }, 30000);
+  }
+
+  function clearTimeStampsLoop() {
+    window.clearInterval(tsLoop);
+    tsLoop = undefined;
+  }
 
 
   //// Firebase Functions ////
@@ -104,7 +123,7 @@ $(document).ready(function() {
       data.tagId = cs.key();
       data.tagName = tagNamesById[cs.key()];
       data.rssi = cs.val().rssi;
-      data.ts = (new Date(cs.val().time * 1000)).toISOString();
+      data.ts = moment(cs.val().time * 1000);
       data.rssiStatus = getRSSIStatus(data.rssi);
       createTagWidget(data);
     });
@@ -181,7 +200,7 @@ $(document).ready(function() {
 
   function createTagWidget(data) {
     $("."+data.tagId).remove();
-    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='css/img/avtr_blank.png' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp'><span data-livestamp='"+data.ts+"'></span></li></ul><div class='status "+data.rssiStatus+"'></div></div>");
+    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='css/img/avtr_blank.png' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
   }
 
 
@@ -211,27 +230,6 @@ $(document).ready(function() {
         }
       }
     }
-  }
-
-
-  /////// timestamp functions
-  function translateTime(dataTS, data) {
-    var secAgo = Math.round((Date.now() - dataTS) / 1000)
-    if (secAgo > 60) {
-      var minAgo = Math.floor(secAgo / 60)
-      data.ts = minAgo + " min ago"
-    } else {
-      data.ts = secAgo + " sec ago"
-    }
-    createTagWidget(data);
-    updateTimeStamps();
-  }
-
-  function updateTimeStamps() {
-    console.log($(".time-stamp").length)
-    // for(var i=0; i < $(".time-stamp").length; i++) {
-    //   console.log($(".time-stamp")[i].text());
-    // }
   }
 
 });

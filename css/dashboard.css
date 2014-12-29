@@ -122,9 +122,6 @@ a:hover, a:focus {
 }
 
 .rt-tracker ul {
-/*  margin: 1%;
-  padding: 0;*/
-
   text-decoration: none;
   list-style-type: none;
 }
@@ -182,6 +179,10 @@ thead {
   width: 240px;
   /*border: 1px solid red;*/
 }
+
+/*.time-stamp {
+  font-size: 10px;
+}*/
 
 .outofrange {
   border-top: 2px solid #f5f5f5;
