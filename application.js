@@ -137,11 +137,11 @@ $(document).ready(function() {
 
   function getRSSIStatus(rssi) {
     if (rssi === undefined) { return "status-empty" };
-    if (rssi < -80) { return "status-one" };
-    if (rssi < -70) { return "status-two" };
-    if (rssi < -60) { return "status-three" };
-    if (rssi < -50) { return "status-four" };
-    if (rssi < -40) { return "status-full" };
+    if (rssi < -79) { return "status-one" };
+    if (rssi < -69) { return "status-two" };
+    if (rssi < -59) { return "status-three" };
+    if (rssi < -49) { return "status-four" };
+    if (rssi < -39) { return "status-full" };
   }
 
   //// View Functions ////
