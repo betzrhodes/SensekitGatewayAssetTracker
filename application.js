@@ -225,8 +225,17 @@ $(document).ready(function() {
   function createTagWidget(data) {
     var avtrImg = 'css/img/avtr_blank.png'
     if (data.tagName in avtrImgByName) { avtrImg = avtrImgByName[data.tagName]}
-    $("."+data.tagId).remove();
-    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='"+avtrImg+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
+
+    if ($("."+data.tagId).length > 0 ) {
+      if ($("."+data.tagId).parent().hasClass("rm-"+data.roomID)) {
+        $("."+data.tagId).html("<img class='avtr' src='"+avtrImg+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div>")
+      } else {
+        $("."+data.tagId).remove();
+        $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='"+avtrImg+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
+      }
+    } else {
+      $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='"+avtrImg+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
+    }
   }
 
   function addTagToSortDropdown(tagId) {
