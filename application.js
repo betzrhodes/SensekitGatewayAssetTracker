@@ -6,6 +6,13 @@ $(document).ready(function() {
   var roomNamesById = {};
   var tagNamesById = {};
   var colorsById = {};
+  var avtrImgByName = { "Mr. Penguin" : 'css/img/avtr_penguin.png',
+                     "Brionna" : 'css/img/avtr_f_wt_shirt.png',
+                     "Brandon" : 'css/img/avtr_m_gr_swtr.png',
+                     "Gino" : 'css/img/avtr_m_bl_suit.png',
+                     "Matt" : 'css/img/avtr_m_bl_swtr.png',
+                     "Betsy" : 'css/img/avtr_f_red_hair.png',
+                   };
 
   //Firebase Refercences
   var fbGateways = new Firebase("https://bletracker.firebaseio.com/gateways/");
@@ -51,15 +58,15 @@ $(document).ready(function() {
     });
     //open listener for changes in gateway names
     fbGateways.on("child_changed", function(s) {
-      buildGWNames(s);
-      colorsById = {};
-      buildRoomDivs(callback);
+      buildGWNames(s, callback);
     })
   }
 
   function getTagNames() {
     fbTags.once("value", buildTagNames);
-    fbTags.on("child_changed", buildTagNames);
+    fbTags.on("child_changed", function(s) {
+      buildTagNames(s, getCurrentRoomData);
+    });
   }
 
   function getCurrentRoomData() {
@@ -94,18 +101,32 @@ $(document).ready(function() {
     });
   }
 
-  function buildGWNames(snapshot) {
-    snapshot.forEach(function(cs) {
-      roomNamesById[cs.key()] = cs.val().location;
-    });
+  function buildGWNames(snapshot, callback) {
+    if (callback) {
+      roomNamesById[snapshot.key()] = snapshot.val().location;
+      colorsById = {};
+      buildRoomDivs(callback);
+      getHistoricalData();
+    } else {
+      snapshot.forEach(function(cs) {
+        roomNamesById[cs.key()] = cs.val().location;
+      });
+    }
   }
 
-  function buildTagNames(snapshot) {
+  function buildTagNames(snapshot, callback) {
     clearSortDropdown();
-    snapshot.forEach(function(cs) {
-      tagNamesById[cs.key()] = cs.val().name;
-      addTagToSortDropdown(cs.key());
-    });
+    if (callback) {
+      tagNamesById[snapshot.key()] = snapshot.val().name;
+      addTagToSortDropdown(snapshot.key());
+      callback();
+      getHistoricalData();
+    } else {
+      snapshot.forEach(function(cs) {
+        tagNamesById[cs.key()] = cs.val().name;
+        addTagToSortDropdown(cs.key());
+      });
+    }
   }
 
   function buildRoomDivs(callback) {
@@ -129,14 +150,6 @@ $(document).ready(function() {
       data.ts = moment(cs.val().time * 1000);
       data.rssiStatus = getRSSIStatus(data.rssi);
       createTagWidget(data);
-      // getRoomDivHeight();
-      // setTimeout(function() {
-      //   $(".room").each(function() {
-      //     if (!$(this).hasClass("outofrange")) {
-      //       $(this).height(maxHeight);
-      //     }
-      //   })
-      // }, 800);
     });
   }
 
@@ -210,16 +223,19 @@ $(document).ready(function() {
   }
 
   function createTagWidget(data) {
-    $("."+data.tagId).remove();
-    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='css/img/avtr_blank.png' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
-  }
+    var avtrImg = 'css/img/avtr_blank.png'
+    if (data.tagName in avtrImgByName) { avtrImg = avtrImgByName[data.tagName]}
 
-  function getRoomDivHeight() {
-    $(".room").each(function() {
-      if (!$(this).hasClass("outofrange") && $(this).height() > maxHeight) {
-        maxHeight = $(this).height();
+    if ($("."+data.tagId).length > 0 ) {
+      if ($("."+data.tagId).parent().hasClass("rm-"+data.roomID)) {
+        $("."+data.tagId).html("<img class='avtr' src='"+avtrImg+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div>")
+      } else {
+        $("."+data.tagId).remove();
+        $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='"+avtrImg+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
       }
-    })
+    } else {
+      $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='"+avtrImg+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
+    }
   }
 
   function addTagToSortDropdown(tagId) {
