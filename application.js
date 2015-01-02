@@ -6,6 +6,19 @@ $(document).ready(function() {
   var roomNamesById = {};
   var tagNamesById = {};
   var colorsById = {};
+  var avtrImgByName = { "Mr. Penguin" : 'css/img/avtr_penguin.png',
+                     "01" : 'css/img/avtr_blank.png',
+                     "Brionna" : 'css/img/avtr_f_wt_shirt.png',
+                     "Brandon" : 'css/img/avtr_m_gr_swtr.png',
+                     "Gino" : 'css/img/avtr_m_bl_suit.png',
+                     "Matt" : 'css/img/avtr_m_bl_swtr.png',
+                     "06" : 'css/img/avtr_blank.png',
+                     "07" : 'css/img/avtr_blank.png',
+                     "08" : 'css/img/avtr_blank.png',
+                     "Betsy" : 'css/img/avtr_f_red_hair.png',
+                     "0a" : 'css/img/avtr_blank.png',
+                     "0b" : 'css/img/avtr_blank.png'
+                   };
 
   //Firebase Refercences
   var fbGateways = new Firebase("https://bletracker.firebaseio.com/gateways/");
@@ -129,14 +142,6 @@ $(document).ready(function() {
       data.ts = moment(cs.val().time * 1000);
       data.rssiStatus = getRSSIStatus(data.rssi);
       createTagWidget(data);
-      // getRoomDivHeight();
-      // setTimeout(function() {
-      //   $(".room").each(function() {
-      //     if (!$(this).hasClass("outofrange")) {
-      //       $(this).height(maxHeight);
-      //     }
-      //   })
-      // }, 800);
     });
   }
 
@@ -211,15 +216,7 @@ $(document).ready(function() {
 
   function createTagWidget(data) {
     $("."+data.tagId).remove();
-    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='css/img/avtr_blank.png' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
-  }
-
-  function getRoomDivHeight() {
-    $(".room").each(function() {
-      if (!$(this).hasClass("outofrange") && $(this).height() > maxHeight) {
-        maxHeight = $(this).height();
-      }
-    })
+    $(".rm-"+data.roomID).append("<div class='"+data.tagId+" "+colorsById[data.roomID]+" tag'><img class='avtr' src='"+avtrImgByName[data.tagName]+"' height='50' width='40'><ul><li>"+data.tagName+"</li><li>RSSI: "+data.rssi+"</li><li class='time-stamp' data-ts='"+data.ts+"'>updated: "+data.ts.fromNow()+"</li></ul><div class='status "+data.rssiStatus+"'></div></div>");
   }
 
   function addTagToSortDropdown(tagId) {
