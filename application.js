@@ -219,7 +219,7 @@ $(document).ready(function() {
   }
 
   function clearRoomDivs() {
-    $(".rt-tracker .row").html('<div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div>');
+    $(".rt-tracker").html('<div class="row top"><div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room"><h2></h2></div></div><div class="row bottom"><div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
   }
 
   function createTagWidget(data) {

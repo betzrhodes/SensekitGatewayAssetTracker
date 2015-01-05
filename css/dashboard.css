@@ -161,6 +161,16 @@ thead {
     border-bottom: 1px solid #f5f5f5;
     padding-bottom: 1%;
   }
+  .room:nth-child(3) {
+    border-right: 0px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 1%;
+  }
+  .room:nth-child(4) {
+    border-left: 0px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 1%;
+  }
 }
 
 .room {
@@ -168,12 +178,22 @@ thead {
 }
 
 @media (min-width: 992px) {
-.room:nth-child(1) {
+  .room:nth-child(1) {
     border-bottom: 0px solid #f5f5f5;
     border-right: 1px solid #f5f5f5;
     padding-bottom: 1%;
   }
   .room:nth-child(2) {
+    border-bottom: 0px solid #f5f5f5;
+    border-left: 1px solid #f5f5f5;
+    padding-bottom: 1%;
+  }
+  .room:nth-child(3) {
+    border-bottom: 0px solid #f5f5f5;
+    border-right: 1px solid #f5f5f5;
+    padding-bottom: 1%;
+  }
+  .room:nth-child(4) {
     border-bottom: 0px solid #f5f5f5;
     border-left: 1px solid #f5f5f5;
     padding-bottom: 1%;
@@ -206,7 +226,7 @@ thead {
   width: 240px;
 }
 
-.outofrange {
+.bottom {
   border-top: 2px solid #f5f5f5;
 }
 
