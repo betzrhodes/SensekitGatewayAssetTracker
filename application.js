@@ -162,7 +162,7 @@ $(document).ready(function() {
   }
 
   function getRSSIStatus(rssi) {
-    if (rssi === undefined) { return "status-empty" };
+    if (rssi === "N/A") { return "status-empty" };
     if (rssi < -79) { return "status-one" };
     if (rssi < -69) { return "status-two" };
     if (rssi < -59) { return "status-three" };
@@ -219,7 +219,7 @@ $(document).ready(function() {
   }
 
   function clearRoomDivs() {
-    $(".rt-tracker").html('<div class="row top"><div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room"><h2></h2></div></div><div class="row bottom"><div class="col-md-6 room"><h2></h2></div><div class="col-md-6 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
+    $(".rt-tracker").html('<div class="row top"><div class="col-md-6 room suite530"><h2>Suite 530</h2></div><div class="col-md-6 room room531"><h2>Room 531</h2></div></div><div class="row bottom"><div class="col-md-6 room hallway"><h2>Hallway</h2></div><div class="col-md-6 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
   }
 
   function createTagWidget(data) {
