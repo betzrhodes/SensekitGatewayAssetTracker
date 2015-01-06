@@ -10,7 +10,7 @@ $(document).ready(function() {
                      "Brionna" : 'css/img/avtr_f_wt_shirt.png',
                      "Brandon" : 'css/img/avtr_m_gr_swtr.png',
                      "Gino" : 'css/img/avtr_m_bl_suit.png',
-                     "Matt" : 'css/img/avtr_m_bl_swtr.png',
+                     "Tom" : 'css/img/avtr_m_bl_swtr.png',
                      "Betsy" : 'css/img/avtr_f_red_hair.png',
                    };
 
