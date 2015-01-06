@@ -6,7 +6,7 @@ $(document).ready(function() {
   var roomNamesById = {};
   var tagNamesById = {};
   var colorsById = {};
-  var avtrImgByName = { "Mr. Penguin" : 'css/img/avtr_penguin.png',
+  var avtrImgByName = { "Peter" : 'css/img/peter_icon.png',
                      "Brionna" : 'css/img/avtr_f_wt_shirt.png',
                      "Brandon" : 'css/img/avtr_m_gr_swtr.png',
                      "Gino" : 'css/img/avtr_m_bl_suit.png',
