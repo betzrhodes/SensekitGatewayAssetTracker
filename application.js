@@ -13,10 +13,13 @@ $(document).ready(function() {
                         "Paul" : 'css/img/avtr_paul.jpg',
                         "Eric" : 'css/img/avtr_eric.jpg',
                      "Brionna" : 'css/img/avtr_f_wt_shirt.png',
-                     "Brandon" : 'css/img/avtr_m_gr_swtr.png',
+                     "Brandon" : 'css/img/avtr_brandon.png',
                      "Gino" : 'css/img/avtr_m_bl_suit.png',
-                     "Tom" : 'css/img/avtr_m_bl_swtr.png',
-                     "Betsy" : 'css/img/avtr_f_red_hair.png',
+                     "Tom" : 'css/img/avtr_tom.jpg',
+                     "Betsy" : 'css/img/avtr_betsy.jpg',
+                     "Shopping Cart 01" : 'css/img/avtr_cart.png',
+                     "Demo" : 'css/img/avtr_bcomTag.png',
+                     "Oliver" : 'css/img/avtr_oliver.png'
                    };
 
   //Firebase Refercences
