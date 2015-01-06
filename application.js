@@ -10,7 +10,7 @@ $(document).ready(function() {
                         "William" : 'css/img/avtr_william.jpg',
                         "Hugo" : 'css/img/avtr_hugo.jpg',
                         "Bryan" : 'css/img/avtr_bryan.jpg',
-                        "Paul" : 'css/img/avtr_paul`.jpg',
+                        "Paul" : 'css/img/avtr_paul.jpg',
                         "Eric" : 'css/img/avtr_eric.jpg',
                         "Brandon" : 'css/img/avtr_brandon.jpg',
                      "Brionna" : 'css/img/avtr_f_wt_shirt.png',
