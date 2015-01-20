@@ -236,7 +236,7 @@ $(document).ready(function() {
 
   function clearRoomDivs() {
     // 2 row format
-    $(".rt-tracker").html('<div class="row top"><div class="col-md-12 room electricImpSuite"><h2>Electric Imp Suite</h2></div></div><div class="row bottom"><div class="col-md-12 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
+    $(".rt-tracker").html('<div class="row top"><div class="col-md-12 room electricimpsuite"><h2>Electric Imp Suite</h2></div></div><div class="row bottom"><div class="col-md-12 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
     // side by side format
     // $(".rt-tracker").html('<div class="row top"><div class="col-md-6 room electricImpSuite"><h2>Electric Imp Suite</h2></div><div class="col-md-6 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
   }
