@@ -125,14 +125,18 @@ $(document).ready(function() {
   function buildTagNames(snapshot, callback) {
     clearSortDropdown();
     if (callback) {
-      tagNamesById[snapshot.key()] = snapshot.val().name;
-      addTagToSortDropdown(snapshot.key());
-      callback();
-      getHistoricalData();
+      if(snapshot.val().name) {
+        tagNamesById[snapshot.key()] = snapshot.val().name;
+        addTagToSortDropdown(snapshot.key());
+        callback();
+        getHistoricalData();
+      }
     } else {
       snapshot.forEach(function(cs) {
-        tagNamesById[cs.key()] = cs.val().name;
-        addTagToSortDropdown(cs.key());
+        if(cs.val().name) {
+          tagNamesById[cs.key()] = cs.val().name;
+          addTagToSortDropdown(cs.key());
+        }
       });
     }
   }
@@ -148,25 +152,29 @@ $(document).ready(function() {
     data.roomID = snapshot.key();
     data.roomName = roomNamesById[snapshot.key()];
     snapshot.forEach(function(cs) {
-      data.tagId = cs.key();
-      data.tagName = tagNamesById[cs.key()];
-      if (cs.val().rssi) {
-        data.rssi = cs.val().rssi;
-      } else {
-        data.rssi = "N/A";
+      if (cs.key() in tagNamesById) {
+        data.tagId = cs.key();
+        data.tagName = tagNamesById[cs.key()];
+        if (cs.val().rssi) {
+          data.rssi = cs.val().rssi;
+        } else {
+          data.rssi = "N/A";
+       }
+        data.ts = moment(cs.val().time * 1000);
+        data.rssiStatus = getRSSIStatus(data.rssi);
+        createTagWidget(data);
       }
-      data.ts = moment(cs.val().time * 1000);
-      data.rssiStatus = getRSSIStatus(data.rssi);
-      createTagWidget(data);
     });
   }
 
   function buildHistoricalData(snapshot, data, limit) {
-    data.preLoc = roomNamesById[snapshot.val().locBefore];
-    data.currLoc = roomNamesById[snapshot.val().locNow];
-    data.tag = tagNamesById[snapshot.val().tag];
-    data.ts = (new Date(snapshot.val().time * 1000)).toLocaleTimeString();
-    updateHistory(data, limit);
+    if(snapshot.val().tag in tagNamesById) {
+      data.preLoc = roomNamesById[snapshot.val().locBefore];
+      data.currLoc = roomNamesById[snapshot.val().locNow];
+      data.tag = tagNamesById[snapshot.val().tag];
+      data.ts = (new Date(snapshot.val().time * 1000)).toLocaleTimeString();
+      updateHistory(data, limit);
+    }
   }
 
   function getRSSIStatus(rssi) {
@@ -227,7 +235,7 @@ $(document).ready(function() {
   }
 
   function clearRoomDivs() {
-    $(".rt-tracker").html('<div class="row top"><div class="col-md-6 room suite530"><h2>Suite 530</h2></div><div class="col-md-6 room room531"><h2>Room 531</h2></div></div><div class="row bottom"><div class="col-md-6 room hallway"><h2>Hallway</h2></div><div class="col-md-6 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
+    $(".rt-tracker").html('<div class="row top"><div class="col-md-12 room electricImpSuite"><h2>Electric Imp Suite</h2></div></div><div class="row bottom"><div class="col-md-12 room outofrange rm-OutOfRange"><h2>Out Of Range</h2></div></div>');
   }
 
   function createTagWidget(data) {
